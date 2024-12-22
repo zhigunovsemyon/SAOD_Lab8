@@ -35,7 +35,7 @@ struct Node {
 	}
 
 	// Функция для вычисления значения дерева
-	double evaluate() {
+	double evaluate() const {
 		if (this->type == NodeType::Leaf) {
 			return this->value; // Если узел - лист, возвращаем его значение
 		}
@@ -58,6 +58,12 @@ struct Node {
 			return operands[0] / std::accumulate(operands.begin() + 1, operands.end(), 1.0, std::multiplies<double>());
 		}
 	}
+
+	friend std::ostream & operator<<(std::ostream & ost, Node const& tree) 
+	{
+		ost << tree.evaluate();
+		return ost;
+	}
 };
 
 
@@ -74,8 +80,7 @@ int main() {
 		root.children.push_back(leaf3);
 
 		// Вычисляем значение дерева
-		double result = root.evaluate();
-		std::cout << "Result: " << result << std::endl; // Ожидаемое значение: 10
+		std::cout << "Result: " << root << std::endl; // Ожидаемое значение: 10
 
 		return 0;
 	}
