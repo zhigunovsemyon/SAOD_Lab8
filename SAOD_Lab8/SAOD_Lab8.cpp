@@ -24,12 +24,12 @@ struct Node {
 	Node(char op) : type(NodeType::Operation), operation(op) {
 		switch (op)
 		{
-		case '+':
-		case '-':
-		case '*':
-		case '/':
+		case '+': //Допустимая операция
+		case '-': //Допустимая операция
+		case '*': //Допустимая операция
+		case '/': //Допустимая операция
 			return;
-		default:
+		default: //Недопустимая операция
 			throw std::invalid_argument(std::string{ "Unknown operation: " } + op);
 		}
 	}
@@ -48,13 +48,13 @@ struct Node {
 
 		// Выполняем операцию
 		switch (this->operation) {
-		case '+':
+		case '+': //Сложение всех элементов
 			return std::accumulate(operands.begin(), operands.end(), 0.0);
-		case '-':
+		case '-': //Вычитание из первого элемента всех остальных (их суммы)
 			return operands[0] - std::accumulate(operands.begin() + 1, operands.end(), 0.0);
-		case '*':
+		case '*': //Перемножение каждого элемента
 			return std::accumulate(operands.begin(), operands.end(), 1.0, std::multiplies<double>());
-		case '/':
+		case '/': //Деление первого элемента на остальные (их произведение)
 			return operands[0] / std::accumulate(operands.begin() + 1, operands.end(), 1.0, std::multiplies<double>());
 		}
 	}
@@ -72,9 +72,9 @@ int main() {
 		Node root('+'); // Корень с операцией сложения
 		
 		// Добавляем листья к корню
-		root.children.push_back(std::make_shared<Node>(5));   // Лист с числом 5
-		root.children.push_back(std::make_shared<Node>(3));   // Лист с числом 3
-		root.children.push_back(std::make_shared<Node>(2));   // Лист с числом 2
+		root.children.push_back(std::make_shared<Node>(5)); // Лист с числом 5
+		root.children.push_back(std::make_shared<Node>(3)); // Лист с числом 3
+		root.children.push_back(std::make_shared<Node>(2)); // Лист с числом 2
 		
 		// Вычисляем значение дерева
 		std::cout << "Result: " << root << std::endl; // Ожидаемое значение: 10
