@@ -3,13 +3,13 @@
 #include <memory>   /*std::shared_ptr*/
 #include <numeric>  /*std::accumulate*/
 
-enum class NodeType {
-	Leaf,
-	Operation
-};
 
 struct Node {
-	NodeType type;
+	enum class NodeType {
+		Leaf,
+		Operation
+	} type;
+
 	union {
 		double value; // Для листа
 		char operation; // Для операции
