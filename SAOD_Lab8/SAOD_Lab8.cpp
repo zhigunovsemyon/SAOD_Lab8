@@ -1,7 +1,7 @@
-﻿#include <iostream>
-#include <vector>
-#include <memory>
-#include <numeric>
+﻿#include <iostream> /*std::ostream, std::cout*/
+#include <vector>   /*std::vector*/
+#include <memory>   /*std::shared_ptr*/
+#include <numeric>  /*std::accumulate*/
 
 enum class NodeType {
 	Leaf,
@@ -69,23 +69,20 @@ struct Node {
 
 int main() {
 	try {
-		// Пример создания дерева
 		Node root('+'); // Корень с операцией сложения
-		auto leaf1 = std::make_shared<Node>(5);   // Лист с числом 5
-		auto leaf2 = std::make_shared<Node>(3);   // Лист с числом 3
-		auto leaf3 = std::make_shared<Node>(2);   // Лист с числом 2
+		
 		// Добавляем листья к корню
-		root.children.push_back(leaf1);
-		root.children.push_back(leaf2);
-		root.children.push_back(leaf3);
-
+		root.children.push_back(std::make_shared<Node>(5));   // Лист с числом 5
+		root.children.push_back(std::make_shared<Node>(3));   // Лист с числом 3
+		root.children.push_back(std::make_shared<Node>(2));   // Лист с числом 2
+		
 		// Вычисляем значение дерева
 		std::cout << "Result: " << root << std::endl; // Ожидаемое значение: 10
 
-		return 0;
+		return EXIT_SUCCESS;
 	}
 	catch (std::invalid_argument arg) {
-		std::cerr << arg.what();
+		std::cerr << arg.what() << std::endl;
 		return EXIT_FAILURE;
 	}
 }
