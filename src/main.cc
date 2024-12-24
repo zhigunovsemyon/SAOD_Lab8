@@ -25,10 +25,11 @@ struct Node {
 	Node(char op) : type(NodeType::Operation), operation(op)
 	{
 		switch (op) {
-		case '+': // Допустимая операция
-		case '-': // Допустимая операция
-		case '*': // Допустимая операция
-		case '/': // Допустимая операция
+		// Допустимая операция
+		case '+':
+		case '-':
+		case '*':
+		case '/':
 			return;
 		default: // Недопустимая операция
 			throw std::invalid_argument(
@@ -37,49 +38,49 @@ struct Node {
 	}
 
 	// Функция для вычисления значения дерева
-	double evaluate() const
-	{
-		// Если узел - лист, возвращаем его значение
-		if (this->type == NodeType::Leaf) {
-			return this->value;
-		}
-
-		// Если узел - операция, вычисляем значения всех детей
-		std::vector<double> operands;
-		for (auto const & child : this->children) {
-			operands.push_back(child->evaluate());
-		}
-
-		// Выполняем операцию
-		switch (this->operation) {
-		case '+': // Сложение всех элементов
-			return std::accumulate(operands.begin(), operands.end(),
-					       0.0);
-		case '-': /*Вычитание из первого элемента всех остальных
-			(их суммы) */
-			return operands[0] -
-			       std::accumulate(operands.begin() + 1,
-					       operands.end(), 0.0);
-		case '*': // Перемножение каждого элемента
-			return std::accumulate(operands.begin(), operands.end(),
-					       1.0, std::multiplies<double>());
-		case '/': /*Деление первого элемента на остальные
-			(их произведение) */
-			return operands[0] /
-			       std::accumulate(operands.begin() + 1,
-					       operands.end(), 1.0,
-					       std::multiplies<double>());
-		default:
-			throw std::invalid_argument(
-				std::string{"Unknown operation: "} + operation);
-		}
-	}
+	double evaluate() const;
 
 	friend std::ostream & operator<<(std::ostream & ost, Node const & tree)
 	{
 		return ost << tree.evaluate(); // Возвращает ost
 	}
 };
+
+// Функция для вычисления значения дерева
+double Node::evaluate() const
+{
+	// Если узел - лист, возвращаем его значение
+	if (this->type == NodeType::Leaf) {
+		return this->value;
+	}
+
+	// Если узел - операция, вычисляем значения всех детей
+	std::vector<double> operands;
+	for (auto const & child : this->children) {
+		operands.push_back(child->evaluate());
+	}
+
+	// Выполняем операцию
+	switch (this->operation) {
+	case '+': // Сложение всех элементов
+		return std::accumulate(operands.begin(), operands.end(), 0.0);
+	case '-': /*Вычитание из первого элемента всех остальных
+		(их суммы) */
+		return operands[0] - std::accumulate(operands.begin() + 1,
+						     operands.end(), 0.0);
+	case '*': // Перемножение каждого элемента
+		return std::accumulate(operands.begin(), operands.end(), 1.0,
+				       std::multiplies<double>());
+	case '/': /*Деление первого элемента на остальные
+		(их произведение) */
+		return operands[0] / std::accumulate(operands.begin() + 1,
+						     operands.end(), 1.0,
+						     std::multiplies<double>());
+	default:
+		throw std::invalid_argument(std::string{"Unknown operation: "} +
+					    operation);
+	}
+}
 
 int main()
 {
